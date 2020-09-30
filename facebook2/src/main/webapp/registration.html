@@ -16,6 +16,32 @@
 		
 		
 	}
+	
+		
+	function emailvalid(){
+	
+		var v=document.getElementById("n3").value;
+		var x=new XMLHttpRequest();
+		//step 2 how xhr will open connection with server
+		x.open("GET","my.jsp?email="+v,true);
+		
+		//step 3 how xhr will send request
+		x.send();
+		
+		//step 4 how xhr will get response from server
+		//state={0,1,2,3,4}
+		
+		x.onreadystatechange=function(){
+			
+			if(x.readyState==4){
+				//alert(x.responseText);
+				var vv=x.responseText;
+				document.getElementById("rr").innerHTML=vv;
+				
+			}
+		}
+		
+	}
 	function generateCaptcha(){
 		var v=parseInt((Math.random())*10000);
 		document.getElementById("result").innerHTML="<input type=text disabled id=nb value="+v+"><input type=button value=refresh onClick=generateCaptcha()><br> enter above no<input type=text id=cc1><input type=button value=validate onclick=captchavalidate()>";
@@ -27,6 +53,22 @@
 		if(v1==v2){
 			document.getElementById("bb").disabled=false;
 		}
+		
+	function passwordvalid(){
+		var v1=document.getElementById("n2").value;
+		if(v1.length<4)
+			document.getElementById("rr").innerHTML="<font color=red> password nneds to be greater than 4 char </font>";
+		if(v1.length>=4 && v1.length<6)
+			document.getElementById("rr").innerHTML="<font color=red> weak </font>";
+		if(v1.length>=6 && v1.length<8)
+			document.getElementById("rr").innerHTML="<font color=red> medium </font>";
+		if(v1.length>=8)
+			document.getElementById("rr").innerHTML="<font color=red> strong </font>";
+		}
+	
+	
+			
+	
 	}
 </script>
 
@@ -36,17 +78,21 @@
 
 <p align="center">Registration Page</p>
 	<center>
-	<form action="RegistrationServlet" method="">
+	<form action="RegistrationServlet111.jsp" method="">
 		Name : <input type=text name=name id="n1" class="nn" required pattern=^(?![0-9]|[_].*$).*> <br>
-		Password : <input type=password name=password id="n2" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}" title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters"> <br> 
-		Email : <input type=email name=email id="n3" required> <br>
+		Password : <input type=password name=password id="n2" required onkeyup="passwordvalid()"><br>
+		<div id="rr"></div>
+		Email : <input type=email name=email id="n3" required onkeyup="emailvalid()"> <div id="rr"></div><br>
 		Address : <input type=text name=address id="n4" required  onBlur="generateCaptcha()"><br>
 		Telephone :<input type="tel" id="n5" name="phone" pattern="[1-9]{1}[0-9]{9}">
 		<div id="result"></div>
+  
 		
 		<input type=submit value=Register id=bb onclick="validate()" disabled> <br>
 
-
+	</form>
+	</center>
+	
 
 </body>
 </html>
